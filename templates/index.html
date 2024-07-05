@@ -5,13 +5,19 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Chat em Tempo Real</title>
+      <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+      />
     </head>
     <body>
-      <ul id="messages"></ul>
-      <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Enviar</button>
-      </form>
-
+      <div id="main">
+        <h1>Chat With Yourself!</h1>
+        <ul id="messages"></ul>
+        <form id="form" action="">
+          <input id="input" autocomplete="off" /><button>Enviar</button>
+        </form>
+      </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
       <script>
         var socket = io.connect(
@@ -19,10 +25,18 @@
         );
 
         socket.on("message", function (msg) {
+          var div = document.createElement("div");
           var ul = document.getElementById("messages");
           var li = document.createElement("li");
+          var name = document.createElement("p")
+
+          div.setAttribute('id', 'user')
+          name.appendChild(document.createTextNode("Usuário:"));
           li.appendChild(document.createTextNode(msg));
-          ul.appendChild(li);
+
+          div.appendChild(name)
+          div.appendChild(li)
+          ul.appendChild(div);
         });
 
         document.getElementById("form").onsubmit = function () {
